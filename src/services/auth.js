@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://chitchat-server-ge49.onrender.com/api";
+const API_URL = "https://chitchat-server-3szl.onrender.com/api";
 
 export const register = (username,fullname, phone, email, password) => {
   return axios.post(`${API_URL}/auth/local/register`, {
