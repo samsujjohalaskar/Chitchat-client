@@ -29,7 +29,7 @@ const App = () => {
             <div
               className={`fixed h-dvh top-0 ${
                 sideBar ? "left-0" : "-left-60 sm:left-0"
-              } bg-slate-800 text-white p-4 min-w-60 transition-all duration-500 flex flex-col justify-between sm:relative sm:rounded-l-2xl sm:h-[800px]`}
+              } bg-slate-800 text-white p-4 min-w-60 transition-all duration-500 flex flex-col justify-between z-20 sm:relative sm:rounded-l-2xl sm:h-[800px]`}
             >
               <IoMdClose
                 className="absolute right-2 top-2 sm:hidden"
@@ -73,7 +73,7 @@ const App = () => {
               </button>
             </div>
             <div className="flex-1 h-full max-w-full">
-              <div className="flex justify-between items-center border-b-[1px] border-slate-200 p-2">
+              <div className="flex justify-between items-center border-b-[1px] border-slate-200 bg-white w-full p-2 fixed top-0 sm:bg-transparent sm:relative">
                 <div className="sm:hidden">
                   <Logo />
                 </div>
@@ -87,7 +87,7 @@ const App = () => {
               {currentSession ? (
                 <Chat currentSession={currentSession} />
               ) : (
-                <p className="text-center mt-2">
+                <p className="text-center mt-16 sm:mt-2">
                   Select or create a session to start chatting.
                 </p>
               )}

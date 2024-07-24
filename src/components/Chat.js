@@ -11,7 +11,7 @@ const Chat = ({ currentSession }) => {
 
   useEffect(() => {
     const createClient = () => {
-      const client = new W3CWebSocket("wss://chitchatws.onrender.com");
+      const client = new W3CWebSocket("ws://chitchatws.onrender.com");
       clientRef.current = client;
 
       client.onopen = () => {
@@ -136,15 +136,19 @@ const Chat = ({ currentSession }) => {
   const groupedMessages = groupMessagesByDate(messages);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center flex-wrap p-2 font-medium bg-white sm:gap-1">
+    <div className="flex flex-col h-screen sm:h-full">
+      <div className="flex justify-between items-center p-2 bg-white shadow-md z-10 fixed top-14 border-t-[1px] border-slate-200 left-0 right-0 sm:shadow-none sm:bg-transparent sm:top-0 sm:relative sm:gap-1">
         <p>Session: {currentSession && currentSession.name}</p>
-        <p className="text-sm text-slate-500">{currentSession && formatDate(currentSession.timestamp)}</p>
+        <p className="text-sm text-slate-500">
+          {currentSession && formatDate(currentSession.timestamp)}
+        </p>
       </div>
-      <div className="h-[670px] flex flex-col overflow-y-auto p-4 bg-slate-200 sm:h-[660px]">
+      <div className="flex-1 overflow-y-auto p-4 pt-24 mt-2 bg-slate-200 sm:flex sm:flex-col sm:flex-none sm:pt-0 sm:mt-0 sm:h-[660px]">
         {Object.keys(groupedMessages).map((date, index) => (
           <div key={index} className="mt-2">
-            <div className="text-center mb-4 text-sm text-slate-500">{formatDate(date)}</div>
+            <div className="text-center mb-4 text-sm text-slate-500">
+              {formatDate(date)}
+            </div>
             {groupedMessages[date].map((msg, msgIndex) =>
               msg.sender === "user" ? (
                 <div key={msgIndex} className="flex justify-end mb-2">
@@ -170,7 +174,7 @@ const Chat = ({ currentSession }) => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex gap-2 items-center p-2 bg-white sm:rounded-b-2xl">
+      <div className="flex items-center p-2 bg-white shadow-md fixed bottom-0 left-0 right-0 gap-2 sm:shadow-none sm:relative sm:rounded-b-2xl">
         <input
           type="text"
           className="flex-grow p-2 border border-gray-300 rounded-full focus:outline-none"
