@@ -11,7 +11,7 @@ const Chat = ({ currentSession }) => {
 
   useEffect(() => {
     const createClient = () => {
-      const client = new W3CWebSocket("ws://localhost:8080");
+      const client = new W3CWebSocket("wss://chitchat-server-iinz.onrender.com");
       clientRef.current = client;
 
       client.onopen = () => {
