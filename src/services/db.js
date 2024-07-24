@@ -22,7 +22,12 @@ export const addMessage = async (sessionId, message) => {
   const db = await dbPromise;
   const tx = db.transaction("messages", "readwrite");
   const store = tx.objectStore("messages");
-  await store.add({ sessionId, message, timestamp: new Date() });
+  await store.add({
+    sessionId,
+    content: message.content,
+    sender: message.sender,
+    timestamp: message.timestamp,
+  });
   await tx.done;
 };
 
@@ -39,7 +44,13 @@ export const getMessagesForSession = async (sessionId) => {
 export const addSession = async () => {
   try {
     const db = await dbPromise;
-    const session = { name: `Session ${Date.now()}`, timestamp: new Date() };
+    const currentDate = new Date();
+    const sessionName = `SD${currentDate
+      .toLocaleDateString("en-GB")
+      .replace(/\//g, "")}T${currentDate
+      .toLocaleTimeString("en-GB", { hour12: false })
+      .replace(/:/g, "")}`;
+    const session = { name: sessionName, timestamp: currentDate };
     const tx = db.transaction("sessions", "readwrite");
     const store = tx.objectStore("sessions");
     const id = await store.add(session);

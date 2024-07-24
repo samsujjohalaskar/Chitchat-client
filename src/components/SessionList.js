@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { getSessions, addSession } from "../services/db";
+import { IoCreateOutline } from "react-icons/io5";
 
-const SessionList = ({ setCurrentSession }) => {
+const SessionList = ({ setCurrentSession, currentSession, onSessionClick }) => {
   const [sessions, setSessions] = useState([]);
 
   useEffect(() => {
     const fetchSessions = async () => {
       const storedSessions = await getSessions();
       setSessions(storedSessions);
-      console.log("Fetched sessions:", storedSessions);
     };
 
     fetchSessions();
   }, []);
 
+  useEffect(() => {
+    if (sessions.length > 0) {
+      setCurrentSession(sessions[sessions.length - 1]);
+    }
+  }, []);
+
   const handleNewSession = async () => {
-    console.log("Creating a new session...");
     const newSession = await addSession();
     if (newSession) {
-      console.log("New session created:", newSession);
       setSessions((prevSessions) => [...prevSessions, newSession]);
       setCurrentSession(newSession);
     } else {
@@ -27,20 +31,30 @@ const SessionList = ({ setCurrentSession }) => {
   };
 
   return (
-    <div className="session-list">
-      <h2 className="text-center">Sessions</h2>
-      <button
+    <div className="mt-6">
+      <div
         onClick={handleNewSession}
-        className="btn btn-secondary w-100 mb-3"
+        className="flex justify-between items-center border-slate-600 border-t-[1px] py-4 cursor-pointer"
       >
-        New Session
-      </button>
-      <ul className="list-group">
-        {sessions.map((session) => (
+        <p className="text-sm">New Session</p>
+        <IoCreateOutline />
+      </div>
+      <p className="mt-3 text-sm text-slate-300">
+        Past Sessions ({sessions.length})
+      </p>
+      <ul className="flex flex-col gap-1 mt-2 max-h-80 overflow-y-auto">
+        {[...sessions].reverse().map((session) => (
           <li
             key={session.id}
-            className="list-group-item"
-            onClick={() => setCurrentSession(session)}
+            className={`text-sm cursor-pointer w-full p-1 rounded ${
+              currentSession &&
+              currentSession.name === session.name &&
+              "bg-slate-600"
+            }`}
+            onClick={() => {
+              setCurrentSession(session);
+              onSessionClick();
+            }}
           >
             {session.name}
           </li>

@@ -1,81 +1,22 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.loader {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
 
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  margin: 0 auto;
-  max-width: 600px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.chat-box {
-  flex: 1;
-  overflow-y: auto;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.chat-message {
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #e1ffc7;
-}
-
-.input-group {
-  display: flex;
-}
-
-.auth-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-.App {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.auth-container {
-  max-width: 500px;
-  width: 100%;
-}
-
-.main-container {
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-@media (min-width: 768px) {
-  .main-container {
-    display: flex;
-    flex-direction: column;
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
