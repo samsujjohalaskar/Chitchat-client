@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { addMessage, getMessagesForSession } from "../services/db";
 import { IoMdSend } from "react-icons/io";
+import Loader from "./Loader";
 
 const Chat = ({ currentSession }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const clientRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -17,6 +19,7 @@ const Chat = ({ currentSession }) => {
 
       client.onopen = () => {
         console.log("WebSocket Client Connected");
+        setLoading(false);
       };
 
       client.onmessage = (messageEvent) => {
@@ -39,10 +42,12 @@ const Chat = ({ currentSession }) => {
 
       client.onerror = (error) => {
         console.error("WebSocket error", error);
+        setLoading(true);
       };
 
       client.onclose = () => {
         console.log("WebSocket Client Disconnected. Reconnecting...");
+        setLoading(true);
         setTimeout(createClient, 3000);
       };
     };
@@ -149,6 +154,7 @@ const Chat = ({ currentSession }) => {
 
   return (
     <div className="flex flex-col h-screen">
+      {loading && <Loader />}
       <div className="flex justify-between items-center p-2 bg-white shadow-md fixed top-14 left-0 right-0 z-10 border-y-[1px] border-slate-200 sm:relative sm:top-0 sm:shadow-none sm:border-y-0">
         <p>Session: {currentSession && currentSession.name}</p>
         <p className="text-sm text-slate-500">
