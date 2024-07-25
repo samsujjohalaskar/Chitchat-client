@@ -33,7 +33,10 @@ const SessionList = ({ setCurrentSession, currentSession, onSessionClick }) => {
   return (
     <div className="mt-6">
       <div
-        onClick={handleNewSession}
+        onClick={() => {
+          handleNewSession();
+          onSessionClick();
+        }}
         className="flex justify-between items-center border-slate-600 border-t-[1px] py-4 cursor-pointer"
       >
         <p className="text-sm">New Session</p>

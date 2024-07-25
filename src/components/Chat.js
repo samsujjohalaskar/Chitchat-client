@@ -6,6 +6,7 @@ import { IoMdSend } from "react-icons/io";
 const Chat = ({ currentSession }) => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
   const clientRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -135,15 +136,31 @@ const Chat = ({ currentSession }) => {
 
   const groupedMessages = groupMessagesByDate(messages);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setKeyboardOpen(window.innerHeight < 500);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col h-screen sm:h-full">
-      <div className="flex justify-between items-center p-2 bg-white shadow-md z-10 fixed top-14 border-t-[1px] border-slate-200 left-0 right-0 sm:shadow-none sm:bg-transparent sm:top-0 sm:relative sm:gap-1">
+    <div className="flex flex-col h-screen">
+      <div className="flex justify-between items-center p-2 bg-white shadow-md fixed top-14 left-0 right-0 z-10 border-y-[1px] border-slate-200 sm:relative sm:top-0 sm:shadow-none sm:border-y-0">
         <p>Session: {currentSession && currentSession.name}</p>
         <p className="text-sm text-slate-500">
           {currentSession && formatDate(currentSession.timestamp)}
         </p>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 pt-24 mt-2 bg-slate-200 sm:flex sm:flex-col sm:flex-none sm:pt-0 sm:mt-0 sm:h-[660px]">
+
+      <div
+        className={`message-container flex-1 overflow-y-auto p-4 py-16 pt-24 mt-2 bg-slate-200 sm:py-4 sm:flex sm:flex-col sm:flex-none sm:pt-0 sm:mt-0 sm:h-[660px] ${
+          keyboardOpen ? "keyboard-open" : ""
+        }`}
+      >
         {Object.keys(groupedMessages).map((date, index) => (
           <div key={index} className="mt-2">
             <div className="text-center mb-4 text-sm text-slate-500">
@@ -174,7 +191,8 @@ const Chat = ({ currentSession }) => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex items-center p-2 bg-white shadow-md fixed bottom-0 left-0 right-0 gap-2 sm:shadow-none sm:relative sm:rounded-b-2xl">
+
+      <div className="flex items-center p-2 bg-white shadow-md rounded-b-xl fixed bottom-0 left-0 right-0 gap-2 z-10 sm:shadow-none sm:relative">
         <input
           type="text"
           className="flex-grow p-2 border border-gray-300 rounded-full focus:outline-none"

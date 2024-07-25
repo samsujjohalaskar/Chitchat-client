@@ -20,3 +20,11 @@
         transform: rotate(360deg);
     }
 }
+
+.message-container {
+    transition: height 0.3s ease;
+}
+
+.message-container.keyboard-open {
+    height: calc(100vh - 80px);
+}
