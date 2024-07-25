@@ -12,7 +12,7 @@ const Chat = ({ currentSession }) => {
 
   useEffect(() => {
     const createClient = () => {
-      const client = new W3CWebSocket("wss://chitchatws.onrender.com");
+      const client = new W3CWebSocket(process.env.REACT_APP_WS_URL);
       clientRef.current = client;
 
       client.onopen = () => {

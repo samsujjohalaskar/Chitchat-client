@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "https://chitchat-server-iinz.onrender.com/api";
+const API_URL = process.env.REACT_APP_API_URL;
 
-export const register = (username,fullname, phone, email, password) => {
+export const register = (username, fullname, phone, email, password) => {
   return axios.post(`${API_URL}/auth/local/register`, {
     username,
     fullname,
